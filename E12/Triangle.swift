@@ -1,0 +1,236 @@
+    //
+    //  Triangle.swift
+    //  E12
+    //
+    //  Created by stephen weber on 5/2/22.
+    //
+
+import Foundation
+import SwiftUI
+
+class Triangle {
+    
+    var theFactors = [Int:[Int]]()
+    
+    var justFactors = [Int:Int]()
+    
+    func tri(_ n: Int)-> Int {
+        return (n * (n+1)) / 2
+    }
+    
+    func gcd(_ a: Int , _ b: Int) -> Int {
+        let r = a%b
+        if  r == 0 {
+            return b
+        }
+        else {
+            return gcd(b,r)
+        }
+    }
+    
+    func factors(_ n : Int)-> [Int] {
+        var answer = Set<Int>()
+        
+        
+        answer.insert(n)
+        if n>=1 {answer.insert(1)}
+        var Divisor = 2
+        while n > Divisor {
+            if n%Divisor == 0 {
+                answer.insert(Divisor)
+                
+                
+                
+            }
+            
+            Divisor += 1
+        }
+        var t  = Array(answer)
+        t.sort()
+        return t
+    }
+    
+    func  subFactors(gross: Int, factor: [Int])-> [Int] {
+        var p = Set<Int>()
+        for i in factor {
+            var u = i
+            while u<=gross {
+                if gross%u==0{
+                    p.insert(u)}
+                u+=i
+//                if i==2 {
+//                    print(i,u,p)
+//                }
+            }
+        }
+        var d = Array(p)
+        d.sort()
+        return d
+    }
+    
+    func theN(_ n: Int)->[Int] {
+        var answer = [Int]()
+        let  gross = (n*(n+1)/2)
+        answer.append(gross)
+        
+        if n%2==0 {
+            
+            let p = n/2
+            answer.append(p)
+            if let val = theFactors[p] {
+                answer += val
+                print("check")
+            }
+            else {
+                 
+                answer += factors(p)
+            }
+            let pp = (n+1)
+            answer.append(pp)
+            if let val = theFactors[pp] {
+                answer += val
+                print("anotherCheck")
+            }
+            else {
+                 
+                answer += factors(p)
+            }
+            
+        }
+        else {
+            
+            let p = (n+1) / 2
+            answer.append(p)
+            if let val = theFactors[p] {
+                answer += val
+                print("DoubleCheck")
+            }
+            else {
+                
+                answer += factors(p)
+            }
+            let pp = (n)
+            answer.append(pp)
+            if let val = theFactors[pp]{
+                answer += val
+                print("tripleCheck")
+            }
+            else {
+                
+                answer += factors(p)
+            }
+        }
+     //   print(n,":",answer,".......")
+        var result = Array(Set(answer))
+        result.sort()
+        var topOff = subFactors(gross: gross,factor: result)
+        theFactors[gross] = topOff
+        return topOff
+    }
+     
+    
+    func justNumbersOfFactors(_ n: Int)-> Int {
+        
+        let gross = tri(n)
+        let gMax = Int(round(sqrt(Double(gross))))
+        var f = 0
+        for i in 1...gMax {
+            
+            if gross%i==0 {
+                if i*i != gross {
+                f+=2
+                }
+                else {
+                    f+=1
+                }
+            }
+            
+            
+        }
+        return f
+    }
+    
+    func NumOfFactors(_ n: Int) -> Int {
+        let gross  = Int(round(sqrt(Double(n))))
+        var f = 0
+        for i in 1...gross  {
+            
+            if n%i==0 {
+                if i*i != n {
+                    f+=2
+                }
+                else {
+                    f+=1
+                }
+            }
+            
+            
+        }
+        justFactors[n] = f
+        return f
+    }
+    
+    func useFactors(_ number:Int) ->Int{
+        var M = 0
+        var MM = 0
+        if number % 2 == 0 {
+            let A = number / 2
+            let B = number + 1
+            if let val = justFactors[A] {
+                M = val
+            }
+            else {
+               M =  NumOfFactors(A)
+            }
+            if let val = justFactors[B] {
+                MM = val
+            }
+            else {
+                MM = NumOfFactors(B)
+            }
+        }
+        else {
+            let A = (number + 1 ) / 2
+            let B = number
+            if let val = justFactors[A] {
+                M = val
+            }
+            else {
+                M =  NumOfFactors(A)
+            }
+            if let val = justFactors[B] {
+                MM = val
+            }
+            else {
+                MM = NumOfFactors(B)
+            }
+            
+            
+        }
+            
+        justFactors[tri(number)] = M*MM
+      return M*MM
+    
+    }
+    
+    
+}
+
+/*
+ The sequence of triangle numbers is generated by adding the natural numbers. So the 7th triangle number would be 1 + 2 + 3 + 4 + 5 + 6 + 7 = 28. The first ten terms would be:
+ 
+ 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, ...
+ 
+ Let us list the factors of the first seven triangle numbers:
+ 
+ 1: 1
+ 3: 1,3
+ 6: 1,2,3,6
+ 10: 1,2,5,10
+ 15: 1,3,5,15
+ 21: 1,3,7,21
+ 28: 1,2,4,7,14,28
+ We can see that 28 is the first triangle number to have over five divisors.
+ 
+ What is the value of the first triangle number to have over five hundred divisors?
+ */
