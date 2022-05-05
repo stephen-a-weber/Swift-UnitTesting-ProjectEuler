@@ -1,0 +1,39 @@
+//
+//  E9Tests.swift
+//  E9Tests
+//
+//  Created by stephen weber on 5/1/22.
+//
+
+import XCTest
+@testable import E9
+
+class E9Tests: XCTestCase {
+    var triplet : Triplet!
+    override func setUpWithError() throws {
+        triplet = Triplet()
+        
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+
+    override func tearDownWithError() throws {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+
+    func testExample() throws {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // Any test you write for XCTest can be annotated as throws and async.
+        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
+        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    }
+    
+    func testSolution() {
+     print(   triplet.solution())
+        //31875000 is solution (x,y,z) = (200 375 425)
+    }
+    
+    
+    
+ 
+}
